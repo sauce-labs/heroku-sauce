@@ -30,12 +30,16 @@ module Sauce
       end
 
       def username
-        return nil unless configured?
+        if !configured?
+          return ENV["SAUCE_USERNAME"]
+        end
         config['username']
       end
 
       def access_key
-        return nil unless configured?
+        if !configured?
+          return ENV["SAUCE_ACCESS_KEY"]
+        end
         config['access_key']
       end
 

@@ -103,10 +103,28 @@ describe Sauce::Heroku::Config do
 
     context 'when not configured' do
       before :each do
+        puts "TEST ENV: #{ENV["SAUCE_USERNAME"]}"
         config.stub(:configured? => false)
       end
 
       it { should be_nil }
+
+      context "with details in the ENV" do
+        before :each do
+          stored_username = ENV["SAUCE_USERNAME"]
+          ENV["SAUCE_USERNAME"] = 'duckling'
+        end
+
+        after :each do
+          if @stored_username
+            ENV["SAUCE_USERNAME"] = @stored_username
+          else
+            ENV.delete "SAUCE_USERNAME"
+          end
+        end
+
+        it {should eq 'duckling'}
+      end
     end
 
     context 'when configured' do
@@ -129,6 +147,23 @@ describe Sauce::Heroku::Config do
       end
 
       it { should be_nil }
+
+      context "with details in the ENV" do
+        before :each do
+          stored_username = ENV["SAUCE_ACCESS_KEY"]
+          ENV["SAUCE_ACCESS_KEY"] = 'DSFARGEG'
+        end
+
+        after :each do
+          if @stored_username
+            ENV["SAUCE_ACCESS_KEY"] = @stored_username
+          else
+            ENV.delete "SAUCE_ACCESS_KEY"
+          end
+        end
+
+        it {should eq 'DSFARGEG'}
+      end
     end
 
     context 'when configured' do

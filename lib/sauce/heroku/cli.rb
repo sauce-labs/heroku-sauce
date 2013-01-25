@@ -37,10 +37,10 @@ module Heroku
 
         if username.nil? && apikey.nil?
           # Let's go interactive!
-          display "Sauce username: ", false
-          username = ask
-          display "Sauce API key: ", false
-          apikey = ask
+          display "Sauce username#{" (default is '#{ENV["SAUCE_USERNAME"]}')" if ENV["SAUCE_USERNAME"]}: ", false
+          username = ask || ENV["SAUCE_USERNAME"]
+          display "Sauce API key#{" (default is '#{ENV["SAUCE_ACCESS_KEY"]}')" if ENV["SAUCE_ACCESS_KEY"]}: ", false
+          apikey = ask || ENV["SAUCE_ACCESS_KEY"]
           display ''
         end
 
