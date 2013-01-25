@@ -81,7 +81,7 @@ access_key: #{apikey}
         [:ie9, ['Windows 2008', 'iexplore', '9']],
       ].each do |method, args|
         define_method(method) do
-          unless @config.configured? && (ENV["SAUCE_USERNAME"] && ENV["SAUCE_ACCESS_KEY"])
+          unless @config.configured? && !(ENV["SAUCE_USERNAME"] && ENV["SAUCE_ACCESS_KEY"])
             display 'Sauce for Heroku has not yet been configured!'
           else
             @url = api.get_app(app).body['web_url']
