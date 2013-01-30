@@ -26,7 +26,15 @@ module Sauce
       end
 
       def configured?
-        return !(config.nil?)
+        configuration_present = !(config.nil?)
+        unless !configuration_present
+          environment_configuration = ENV["SAUCE_USERNAME"] && ENV["SAUCE_ACCESS_KEY"]
+          if environment_configuration
+            puts "Warning: No configuration detected, using environment variables instead"
+            configuration_present = true
+          end
+        end
+        return configuration_present
       end
 
       def username
