@@ -24,6 +24,34 @@ describe Sauce::Heroku::Config do
 
       it { should be_true }
     end
+
+    context 'without config details, but env vars' do
+      before :each do
+        config.stub(:config => {})
+      end
+
+      before :all do
+        @stored_username = ENV["SAUCE_USERNAME"]
+        @stored_access_key = ENV["STORED_ACCESS_KEY"]
+
+        ENV["SAUCE_USERNAME"] = "lollipop"
+        ENV["SAUCE_ACCESS_KEY"] = "dsfas343"
+      end
+
+      after :all do
+        ENV["SAUCE_USERNAME"] = @stored_username
+        ENV["SAUCE_ACCESS_KEY"] = @stored_access_key
+      end
+
+      it {should be_true}
+
+      it "should output a warning message" do
+        config.should_receive(:puts).with 'Warning: No configuration detected, using environment variables instead'
+        config.configured?
+      end
+
+
+    end
   end
 
   describe '#load!' do
@@ -103,7 +131,6 @@ describe Sauce::Heroku::Config do
 
     context 'when not configured' do
       before :each do
-        puts "TEST ENV: #{ENV["SAUCE_USERNAME"]}"
         config.stub(:configured? => false)
       end
 
