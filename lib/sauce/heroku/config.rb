@@ -1,4 +1,5 @@
 require 'yaml'
+require 'sauce/rest_api/rest_api'
 
 module Sauce
   module Heroku
