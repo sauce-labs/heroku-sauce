@@ -11,12 +11,21 @@ module Heroku
       def initialize(*args)
         super(*args)
         @config = ::Sauce::Heroku::Config.new
-        @config.load!
-        @sauceapi = ::Sauce::Heroku::API::Sauce.new(@config)
+        unless config.configured?
+          @config.load!
+          @sauceapi = ::Sauce::Heroku::API::Sauce.new(@config)
+        end
+
       end
 
       def index
         display 'Please run `heroku help sauce` for more details'
+      end
+
+      def guess_config
+        display "Password for Sauce Labs:"
+        password = ask
+        @config.guess_config (password)
       end
 
       # sauce:configure
@@ -36,12 +45,17 @@ module Heroku
         apikey = options[:apikey]
 
         if username.nil? && apikey.nil?
-          # Let's go interactive!
-          display "Sauce username#{" (default is '#{ENV["SAUCE_USERNAME"]}')" if ENV["SAUCE_USERNAME"]}: ", false
-          username = ask || ENV["SAUCE_USERNAME"]
-          display "Sauce API key#{" (default is '#{ENV["SAUCE_ACCESS_KEY"]}')" if ENV["SAUCE_ACCESS_KEY"]}: ", false
-          apikey = ask || ENV["SAUCE_ACCESS_KEY"]
-          display ''
+          # Guessing Games are Fun!
+          username, password = guess_password
+
+          unless password
+            # Let's go interactive!
+            display "Sauce username#{" (default is '#{ENV["SAUCE_USERNAME"]}')" if ENV["SAUCE_USERNAME"]}: ", false
+            username = ask || ENV["SAUCE_USERNAME"]
+            display "Sauce API key#{" (default is '#{ENV["SAUCE_ACCESS_KEY"]}')" if ENV["SAUCE_ACCESS_KEY"]}: ", false
+            apikey = ask || ENV["SAUCE_ACCESS_KEY"]
+            display ''
+          end
         end
 
         display 'Sauce CLI plugin configured with:'

@@ -1,4 +1,6 @@
 require 'spec_helper'
+require "sauce/rest_api/rest_api"
+require "heroku/auth"
 
 describe Sauce::Heroku::Config do
   let(:config) { described_class.new }
@@ -8,7 +10,28 @@ describe Sauce::Heroku::Config do
     context 'by default' do
       it { should be_nil }
     end
+  end
+
+  describe '#guess_config' do
+
+    before(:each) do
+      RestAPI.stub(:get_user_details) {{:id => "someguy", :access_key => "access_key"}}
     end
+
+    it "calls the API with the Heroku username and password" do
+      password = "dsfargeg"
+      RestAPI.should_receive(:get_user_details).with(Heroku::Auth.user, password)
+      config.guess_config(password)
+    end
+
+    it "stores the details if they're found" do
+      config.guess_config("")
+
+      config.username.should eq "someguy"
+      config.access_key.should eq "access_key"
+    end
+
+  end
 
   describe '#configured?' do
     subject { config.configured? }
