@@ -22,7 +22,7 @@ describe RestAPI do
     end
 
     it "calls the API with credentials" do
-      expected_url = "https://saucelabs.com/rest/v1/users"
+      expected_url = "https://saucelabs.com/rest/v1/users?email=un"
       expected_options = {:basic_auth => {:username => "un", :password => "pw"}}
       HTTParty.should_receive(:get).with(expected_url, expected_options){@response}
       RestAPI.get_user_details("un", "pw")
