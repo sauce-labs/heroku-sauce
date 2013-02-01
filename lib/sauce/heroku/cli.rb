@@ -25,7 +25,9 @@ module Heroku
       def guess_password
         display "Password for Sauce Labs:"
         password = ask
-        @config.guess_config (password)
+        deets = @config.guess_config (password)
+        puts "deets are #{deets}"
+        deets
       end
 
       # sauce:configure
