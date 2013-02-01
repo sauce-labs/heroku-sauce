@@ -37,6 +37,19 @@ module Sauce
         return configuration_present
       end
 
+      def guess_config (password)
+        username = ::Heroku::Auth.user
+        user_details = RestAPI.get_user_details username, password
+
+        @config = {}
+
+        puts "USAR:  #{user_details}"
+        config['username'] = user_details[:id]
+        config['access_key'] = user_details[:access_key]
+
+        return user_details[:id], user_details[:access_key]
+      end
+
       def username
         if !configured?
           return ENV["SAUCE_USERNAME"]
