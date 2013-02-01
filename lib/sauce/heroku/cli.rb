@@ -25,9 +25,7 @@ module Heroku
       def guess_password
         display "Password for Sauce Labs:"
         password = ask
-        deets = @config.guess_config (password)
-        puts "deets are #{deets}"
-        deets
+        @config.guess_config (password)
       end
 
       # sauce:configure
@@ -48,9 +46,9 @@ module Heroku
 
         if username.nil? && apikey.nil?
           # Guessing Games are Fun!
-          username, password = guess_password
+          username, apikey = guess_password
 
-          unless password
+          unless apikey
             # Let's go interactive!
             display "Sauce username#{" (default is '#{ENV["SAUCE_USERNAME"]}')" if ENV["SAUCE_USERNAME"]}: ", false
             username = ask || ENV["SAUCE_USERNAME"]
