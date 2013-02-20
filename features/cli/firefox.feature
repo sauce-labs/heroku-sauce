@@ -13,6 +13,14 @@ Feature: Start a firefox browser pointing at my Heroku site
       """
       Sauce for Heroku has not yet been configured!
       """
+  Scenario: With Sauce configured, there is no use of ENV VARS
+    Given I have configured the plugin
+    When I run `heroku sauce:firefox`
+    Then the output should not contain: 
+    """
+    Warning: No configuration detected, using environment variables instead
+    """
+      
   @wip
   Scenario: With Sauce configured
     Given I have configured the plugin
