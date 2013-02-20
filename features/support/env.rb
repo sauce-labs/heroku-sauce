@@ -1,7 +1,7 @@
 require 'fileutils'
 require 'aruba/cucumber'
 require 'yaml'
-
+require 'cucumber/rspec/doubles'
 $:.unshift(File.join(File.dirname(__FILE__), '..', '..', 'lib'))
 
 HEROKU_PLUGIN_PATH = File.expand_path('~/.heroku/plugins')

@@ -12,7 +12,8 @@ Feature: Configure the Sauce credentials
 
        Configure the Sauce CLI plugin with your username and API key
 
-       This command can be used interactively, or all the arguments can be passed on the command line.
+       Attempts to guess credentials using Heroku email and Sauce password
+       unless passed all arguments
 
        Interactively: `heroku sauce:configure`
 

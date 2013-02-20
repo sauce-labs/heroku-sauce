@@ -7,6 +7,7 @@ Feature: Start a firefox browser pointing at my Heroku site
 
   Scenario: Without having configured Sauce
     Given I haven't already configured the plugin
+    And The SAUCE_USERNAME environment variable is nil
     When I run `heroku sauce:firefox`
     Then the output should contain:
       """

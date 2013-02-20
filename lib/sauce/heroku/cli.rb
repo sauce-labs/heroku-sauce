@@ -15,7 +15,6 @@ module Heroku
           @config.load!
           @sauceapi = ::Sauce::Heroku::API::Sauce.new(@config)
         end
-
       end
 
       def index
@@ -31,8 +30,9 @@ module Heroku
       # sauce:configure
       #
       # Configure the Sauce CLI plugin with your username and API key
-      #
-      # This command can be used interactively, or all the arguments can be passed on the command line.
+      # 
+      # Attempts to guess credentials using Heroku email and Sauce password
+      # unless passed all arguments
       #
       # Interactively: `heroku sauce:configure`
       #
@@ -95,7 +95,7 @@ access_key: #{apikey}
         [:ie9, ['Windows 2008', 'iexplore', '9']],
       ].each do |method, args|
         define_method(method) do
-          unless @config.configured? || (ENV["SAUCE_USERNAME"] && ENV["SAUCE_ACCESS_KEY"])
+          unless @config.configured?
             display 'Sauce for Heroku has not yet been configured!'
           else
             @url = api.get_app(app).body['web_url']

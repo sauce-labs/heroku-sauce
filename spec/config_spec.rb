@@ -48,6 +48,32 @@ describe Sauce::Heroku::Config do
       it { should be_true }
     end
 
+    context 'without config details but partial env vars' do
+        before :each do
+          config.stub(:config => nil)
+          @stored_username = ENV["SAUCE_USERNAME"]
+          @stored_access_key = ENV["SAUCE_ACCESS_KEY"]
+          ENV.delete "SAUCE_USERNAME"
+          ENV["SAUCE_ACCESS_KEY"] = "SFDFDSFSDFSDF"
+        end
+
+        after :each do
+          unless @stored_username.nil?
+              ENV["SAUCE_USERNAME"] = @stored_username
+          end
+
+          unless @stored_access_key.nil?
+              ENV["SAUCE_ACCESS_KEY"] = @stored_access_key
+          end
+        end
+
+        it "SUCKS" do
+            puts "ENVENVERE #{ENV["SAUCE_USERNAME"]} #{ENV["SAUCE_ACCESS_KEY"]}"
+         subject.should be_false
+        end
+    end
+
+
     context 'without config details, but env vars' do
       before :each do
         config.stub(:config => {})
@@ -69,7 +95,7 @@ describe Sauce::Heroku::Config do
       it {should be_true}
 
       it "should output a warning message" do
-        config.should_receive(:puts).with 'Warning: No configuration detected, using environment variables instead'
+          config.should_receive(:puts).with 'Warning: No configuration detected, using environment variables instead'
         config.configured?
       end
 
@@ -155,22 +181,28 @@ describe Sauce::Heroku::Config do
     context 'when not configured' do
       before :each do
         config.stub(:configured? => false)
+        @stored_username = ENV["SAUCE_USERNAME"]
       end
 
-      it { should be_nil }
+      after :each do
+        if @stored_username
+          ENV["SAUCE_USERNAME"] = @stored_username
+        else
+          ENV.delete "SAUCE_USERNAME"
+        end
+      end
+
+      context "without ENV details" do
+        before :each do
+          ENV.delete "SAUCE_USERNAME"
+        end
+
+        it { should be_nil }
+      end
 
       context "with details in the ENV" do
         before :each do
-          stored_username = ENV["SAUCE_USERNAME"]
           ENV["SAUCE_USERNAME"] = 'duckling'
-        end
-
-        after :each do
-          if @stored_username
-            ENV["SAUCE_USERNAME"] = @stored_username
-          else
-            ENV.delete "SAUCE_USERNAME"
-          end
         end
 
         it {should eq 'duckling'}
@@ -194,22 +226,28 @@ describe Sauce::Heroku::Config do
     context 'when not configured' do
       before :each do
         config.stub(:configured? => false)
+        @stored_access_key = ENV["SAUCE_ACCESS_KEY"]
       end
 
-      it { should be_nil }
+      after :each do
+        if @stored_access_key
+          ENV["SAUCE_ACCESS_KEY"] = @stored_access_key
+        else
+          ENV.delete "SAUCE_ACCESS_KEY"
+        end
+      end
 
-      context "with details in the ENV" do
+      context "without ENV variables" do
         before :each do
-          stored_username = ENV["SAUCE_ACCESS_KEY"]
-          ENV["SAUCE_ACCESS_KEY"] = 'DSFARGEG'
+          ENV.delete "SAUCE_ACCESS_KEY"
         end
 
-        after :each do
-          if @stored_username
-            ENV["SAUCE_ACCESS_KEY"] = @stored_username
-          else
-            ENV.delete "SAUCE_ACCESS_KEY"
-          end
+        it { should be_nil }
+      end
+      
+      context "with details in the ENV" do
+        before :each do
+          ENV["SAUCE_ACCESS_KEY"] = 'DSFARGEG'
         end
 
         it {should eq 'DSFARGEG'}
