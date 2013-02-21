@@ -10,7 +10,7 @@ An experimental plugin for the Heroku CLI to hook it up to Sauce Labs.
 
 To install the Sauce for Heroku plugin, run the following command:
 
-    % heroku plugins:install git://github.com/rtyler/heroku-sauce.git
+    % heroku plugins:install git://github.com/dylanlacey/heroku-sauce.git
 
 After the plugin has been successfully installed, the `heroku help sauce`
 command should list a number of available subcommands:
@@ -22,7 +22,7 @@ command should list a number of available subcommands:
     Additional commands, type "heroku help COMMAND" for more details:
 
     sauce:android    # 
-    sauce:configure  #  Configure the Sauce CLI plugin with your username and API key
+    sauce:configure  #  Configure the Sauce CLI plugin using your heroku email and Sauce Labs password
     sauce:firefox    # 
     sauce:firefox4   # 
     sauce:ie6        # 
@@ -35,18 +35,24 @@ command should list a number of available subcommands:
     %
 
 
-Currently Sauce for Heroku cannot do any auto-detection of a Sauce Labs
-account. If you do not have a Sauce Labs account, you can [register
-here](https://saucelabs.com/signup/plan/free).
+If you do not have a Sauce Labs account, you can [register here](https://saucelabs.com/signup/plan/free).
 
 
 Once you have an account, use the following command to configure Heroku for
 Sauce:
 
     % heroku sauce:configure
-    Sauce username: <enter here>
-    Sauce API key: <copy/paste here>
+    Password for Sauce Labs:
 
+    Sauce CLL plugin configured with:
+ 
+    Username: example
+    API key : example-key
+
+If you don't use the same email for heroku as your sauce labs account, you can supply your credentials on the commandline:
+
+    % heroku sauce:configure -u <sauce username> -k <sauce access key>
+    
     Sauce CLI plugin configured with:
 
     Username: example
