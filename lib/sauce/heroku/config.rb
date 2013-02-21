@@ -60,7 +60,6 @@ module Sauce
 
         @config = {}
 
-        puts "Checking: #{username} #{password} - #{user_details}"
         config['username'] = user_details[:id]
         config['access_key'] = user_details[:access_key]
 
