@@ -119,7 +119,7 @@ access_key: #{apikey}
 
 
       def scoutup!
-        unless @config.configured?
+        unless @config.authentication_available?
           display 'The Sauce plugin is not configured properly'
           return
         end

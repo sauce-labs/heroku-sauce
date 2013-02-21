@@ -21,23 +21,37 @@ module Sauce
 
       def load!
         return config unless config.nil?
-        return nil if filepath.nil?
-
+        if filepath.nil?
+          if environment_configured?
+            puts "Warning: No configuration detected, using environment variables instead"
+            return @config = {
+                "username" => env_username, 
+                "access_key" => env_access_key
+            }
+          else
+            return nil
+          end
+        end
         @config = YAML.load_file(filepath)
       end
 
       def configured?
-        configuration_present = !(config.nil?)
-        unless !configuration_present
-            env_un = ENV["SAUCE_USERNAME"]
-            env_ak = ENV["SAUCE_ACCESS_KEY"]
-            env_config = !(env_un.nil?) && !(env_ak.nil?) 
-          if env_config
+        !(config.nil?)
+      end
+
+      def authentication_available?
+        auth_available = configured?
+        if !auth_available
+          if environment_configured?
             puts "Warning: No configuration detected, using environment variables instead"
-            configuration_present = true
+            auth_available = true
           end
         end
-        return configuration_present
+        auth_available
+      end
+
+      def environment_configured?
+        !(env_access_key.nil? || env_username.nil?)
       end
 
       def guess_config (password)
@@ -54,17 +68,19 @@ module Sauce
       end
 
       def username
-        if !configured?
-          return ENV["SAUCE_USERNAME"]
-        end
-        config['username']
+        !config.nil? ? config['username'] : nil || env_username
       end
 
-      def access_key
-        if !configured?
-          return ENV["SAUCE_ACCESS_KEY"]
-        end
-        config['access_key']
+      def env_username
+        ENV["SAUCE_USERNAME"]
+      end
+
+      def access_key  
+        !config.nil? ? config['access_key'] : nil || env_access_key
+      end
+
+      def env_access_key
+        ENV["SAUCE_ACCESS_KEY"]
       end
 
       def write!

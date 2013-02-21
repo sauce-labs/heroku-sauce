@@ -47,36 +47,36 @@ describe Sauce::Heroku::Config do
 
       it { should be_true }
     end
+  end
 
+  describe '#authentication_available?' do
+    subject { config.authentication_available? }
     context 'without config details but partial env vars' do
-        before :each do
-          config.stub(:config => nil)
-          @stored_username = ENV["SAUCE_USERNAME"]
-          @stored_access_key = ENV["SAUCE_ACCESS_KEY"]
-          ENV.delete "SAUCE_USERNAME"
-          ENV["SAUCE_ACCESS_KEY"] = "SFDFDSFSDFSDF"
+
+      before :each do
+        config.stub(:config => nil)
+        @stored_username = ENV["SAUCE_USERNAME"]
+        @stored_access_key = ENV["SAUCE_ACCESS_KEY"]
+        ENV.delete "SAUCE_USERNAME"
+        ENV["SAUCE_ACCESS_KEY"] = "SFDFDSFSDFSDF"
+      end
+
+      after :each do
+        unless @stored_username.nil?
+          ENV["SAUCE_USERNAME"] = @stored_username
         end
 
-        after :each do
-          unless @stored_username.nil?
-              ENV["SAUCE_USERNAME"] = @stored_username
-          end
-
-          unless @stored_access_key.nil?
-              ENV["SAUCE_ACCESS_KEY"] = @stored_access_key
-          end
+        unless @stored_access_key.nil?
+          ENV["SAUCE_ACCESS_KEY"] = @stored_access_key
         end
+      end
 
-        it "SUCKS" do
-            puts "ENVENVERE #{ENV["SAUCE_USERNAME"]} #{ENV["SAUCE_ACCESS_KEY"]}"
-         subject.should be_false
-        end
+      it { subject.should be_false }
     end
-
 
     context 'without config details, but env vars' do
       before :each do
-        config.stub(:config => {})
+        config.stub(:config => nil)
       end
 
       before :all do
@@ -95,11 +95,40 @@ describe Sauce::Heroku::Config do
       it {should be_true}
 
       it "should output a warning message" do
-          config.should_receive(:puts).with 'Warning: No configuration detected, using environment variables instead'
-        config.configured?
+        config.should_receive(:puts).with 'Warning: No configuration detected, using environment variables instead'
+        config.authentication_available?
+      end
+    end
+  end
+
+  describe '#environment_configured?' do
+    subject { config.environment_configured?}
+
+    context "with env vars" do
+      before (:each) do
+        ENV.stub(:[]).with("SAUCE_USERNAME") { "DERPS" }
+        ENV.stub(:[]).with("SAUCE_ACCESS_KEY") { "HERPS" }
       end
 
+      it {should be_true}
+    end
 
+    context "without env vars" do
+      before (:each) do
+        ENV.stub(:[]).with("SAUCE_USERNAME") {nil}
+        ENV.stub(:[]).with("SAUCE_ACCESS_KEY") {nil}
+      end
+
+      it {should be_false}
+    end
+
+    context "only username" do
+      before (:each) do
+        ENV.stub(:[]).with("SAUCE_USERNAME") { "DERPS" }
+        ENV.stub(:[]).with("SAUCE_ACCESS_KEY") {nil}
+      end
+
+      it {should be_false}
     end
   end
 

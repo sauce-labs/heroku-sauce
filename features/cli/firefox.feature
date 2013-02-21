@@ -4,10 +4,9 @@ Feature: Start a firefox browser pointing at my Heroku site
   I should be able to fire up a Sauce Scout instance pointing at my Heroku
   instance
 
-
+  @remove_environment_variables
   Scenario: Without having configured Sauce
     Given I haven't already configured the plugin
-    And The SAUCE_USERNAME environment variable is nil
     When I run `heroku sauce:firefox`
     Then the output should contain:
       """
@@ -20,7 +19,15 @@ Feature: Start a firefox browser pointing at my Heroku site
     """
     Warning: No configuration detected, using environment variables instead
     """
-      
+  
+  @set_environment_variables
+  Scenario: Without having configured Sauce
+    Given I haven't already configured the plugin
+    When I run `heroku sauce:firefox`
+    Then the output should contain:
+      """
+      Warning: No configuration detected, using environment variables instead
+      """
   @wip
   Scenario: With Sauce configured
     Given I have configured the plugin

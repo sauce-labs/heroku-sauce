@@ -3,7 +3,7 @@ Feature: Configure the Sauce credentials
   As a heroku user
   I should be able to configure my Sauce credentials through the CLI plugin
 
-
+  
   Scenario: Display configure help
     When I run `heroku sauce:configure -h`
     Then the output should contain:
@@ -22,7 +22,8 @@ Feature: Configure the Sauce credentials
        -u, --user USERNAME  # Your Sauce Labs username
        -k, --apikey APIKEY  # Your Sauce Labs API key
       """
-
+  
+    @wip
     Scenario: Interactive configuration
       When I run `heroku sauce:configure` interactively
       And I type "cucumber"
