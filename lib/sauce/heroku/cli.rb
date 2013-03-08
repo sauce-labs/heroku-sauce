@@ -23,7 +23,7 @@ module Heroku
 
       def guess_password
         display "Password for Sauce Labs:"
-        password = ask
+        password = ask { |q| q.echo = "*" }
         @config.guess_config (password)
       end
 

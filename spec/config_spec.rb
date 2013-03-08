@@ -137,10 +137,16 @@ describe Sauce::Heroku::Config do
 
     context 'when no config files are available' do
       before :each do
+        puts "Config is currently: #{config.nil?}"
         config.should_receive(:filepath)
       end
-
-      it { should be_nil }
+      
+      context 'with no environment variables' do
+        before :each do
+          config.stub(:environment_configured?).and_return {false}
+        end
+        it { should be_nil }
+      end
     end
 
     context 'when a config file is available' do
