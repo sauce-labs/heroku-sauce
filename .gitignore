@@ -2,3 +2,4 @@
 Gemfile.lock
 ondemand.yml
 .bundle
+.idea
