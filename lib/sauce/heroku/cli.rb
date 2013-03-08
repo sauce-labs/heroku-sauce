@@ -5,6 +5,8 @@ require 'sauce/heroku/api'
 require 'sauce/heroku/config'
 require 'sauce/heroku/errors'
 
+require 'IO/console'
+
 module Heroku
   module Command
     class Sauce < BaseWithApp
@@ -23,7 +25,9 @@ module Heroku
 
       def guess_password
         display "Password for Sauce Labs:"
-        password = ask { |q| q.echo = "*" }
+        STDIN.echo= false
+        password = ask
+        STDIN.echo = true
         @config.guess_config (password)
       end
 
