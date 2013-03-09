@@ -64,6 +64,8 @@ module Sauce
         config['access_key'] = user_details[:access_key]
 
         return [user_details[:id], user_details[:access_key]]
+      rescue Sauce::AuthenticationError => e
+        return []
       end
 
       def username
