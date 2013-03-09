@@ -28,7 +28,11 @@ module Heroku
         STDIN.echo= false
         password = ask
         STDIN.echo = true
-        @config.guess_config (password)
+        guess = @config.guess_config (password)
+        if guess.empty?
+          display "Sorry, we couldn't find your account."
+          display "We're going to have to ask you to type, sorry!"
+        end
       end
 
       # sauce:configure
