@@ -33,6 +33,8 @@ module Heroku
           display "Sorry, we couldn't find your account."
           display "We're going to have to ask you to type, sorry!"
         end
+
+        return guess
       end
 
       # sauce:configure
