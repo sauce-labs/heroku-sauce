@@ -30,13 +30,37 @@ module Heroku
         if guess.empty?
           display "Sorry, we couldn't find your account."
 
-          create = HighLine.agree("Create a new one?  (No to enter details manually)")
+          create = HighLine.agree("Create a new one? [yes/no] (no => Enter credentials manually) ")
 
-          create_new_account if create
-
+          guess = create_new_account if create
         end
 
         return guess
+      end
+
+      def create_new_account
+        first_run = true
+        new_account = {}
+
+        while new_account["access_key"].nil?
+          puts new_account unless first_run
+          new_account = JSON.parse (ask_for_account_details)
+          first_run = false
+        end
+
+        display "Successfully created your account"
+  
+        return [new_account["id"], new_account["access_key"]]
+      end
+
+      def ask_for_account_details
+        credentials = []
+        credentials[0] = HighLine.ask("Desired Username? ")
+        credentials[1] = HighLine.ask("Password? ")
+        credentials[2] = HighLine.ask("Email Address? <%= ::Heroku::Auth.user %> ") { |q| q.default = ::Heroku::Auth.user }
+        credentials[3] = HighLine.ask("Full Name? ")
+
+        @sauceapi.create_account *credentials
       end
 
       # sauce:configure
