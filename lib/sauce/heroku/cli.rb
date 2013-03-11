@@ -5,6 +5,7 @@ require 'sauce/heroku/api'
 require 'sauce/heroku/config'
 require 'sauce/heroku/errors'
 
+require 'highline/import'
 require 'IO/console'
 
 module Heroku
@@ -24,14 +25,15 @@ module Heroku
       end
 
       def guess_password
-        display "Password for Sauce Labs:"
-        STDIN.echo= false
-        password = ask
-        STDIN.echo = true
+        password = HighLine.ask("Sauce Labs Password? ") {|q| q.echo = "*"}
         guess = @config.guess_config (password)
         if guess.empty?
           display "Sorry, we couldn't find your account."
-          display "We're going to have to ask you to type, sorry!"
+
+          create = HighLine.agree("Create a new one?  (No to enter details manually)")
+
+          create_new_account if create
+
         end
 
         return guess
