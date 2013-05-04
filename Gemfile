@@ -10,6 +10,7 @@ group :development do
   gem 'heroku'
   gem 'sauce'
   gem 'launchy'
+  gem 'io-console'
 end
 
 group :test do
