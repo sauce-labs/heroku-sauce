@@ -62,11 +62,7 @@ module Sauce
           "http://saucelabs.com/rest/v1/users"
         end
 
-        def create_account(u,p,e,f)
-          {"access_key" => "allthethings", "id" => "french"}.to_json
-        end
-
-        def create_account_e(username, password, email, full_name)
+        def create_account(username, password, email, full_name)
           if username.nil? || email.nil? || password.nil?
             raise Errors::InvalidParametersError
           end
