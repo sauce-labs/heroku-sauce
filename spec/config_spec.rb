@@ -18,32 +18,32 @@ describe Sauce::Heroku::Config do
       RSpec.reset
     end
 
-    context "with valid details" do
-      before(:each) do
-        RestAPI.stub(:get_user_details) {{:id => "someguy", :access_key => "access_key"}}
-      end
+#     context "with valid details" do
+#       before(:each) do
+#         RestAPI.stub(:get_user_details) {{:id => "someguy", :access_key => "access_key"}}
+#       end
 
-      it "calls the API with the Heroku username and password" do
-        password = "dsfargeg"
-        RestAPI.should_receive(:get_user_details).with(Heroku::Auth.user, password)
-        config.guess_config(password)
-      end
+#       it "calls the API with the Heroku username and password" do
+#         password = "dsfargeg"
+#         RestAPI.should_receive(:get_user_details).with(Heroku::Auth.user, password)
+#         config.guess_config(password)
+#       end
 
-      it "stores the details if they're found" do
-        config.guess_config("")
+#       it "stores the details if they're found" do
+#         config.guess_config("")
 
-        config.username.should eq "someguy"
-        config.access_key.should eq "access_key"
-      end
-    end
+#         config.username.should eq "someguy"
+#         config.access_key.should eq "access_key"
+#       end
+#     end
 
-    #context "without valid credentials" do
-    #  it "returns an empty array" do
-    #    RestAPI.should_receive(:get_user_details).with(anything,anything).and_raise(Sauce::AuthenticationError)
-    #
-    #    config.guess_config("password").should be_empty
-    #  end
-    #end
+#     context "without valid credentials" do
+#       it "returns an empty array" do
+#         RestAPI.should_receive(:get_user_details).with(anything,anything).and_raise(Sauce::AuthenticationError)
+
+#         config.guess_config("password").should be_empty
+#       end
+#     end
   end
 
   describe '#configured?' do
