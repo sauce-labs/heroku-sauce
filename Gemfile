@@ -1,4 +1,4 @@
-source :rubygems
+source 'https://rubygems.org'
 
 # This group is for vendoring changes for a "release"
 group :vendor do
