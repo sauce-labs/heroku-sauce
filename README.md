@@ -1,6 +1,6 @@
 # Heroku + Sauce = ♡
 
-An experimental plugin for the Heroku CLI to hook it up to Sauce Labs.
+A plugin for the Heroku CLI for quick and easy manual testing with Sauce Labs.
 
 
 ## Using
