@@ -1,8 +1,5 @@
 # Heroku + Sauce = ♡
 
-[![Build
-Status](https://buildhive.cloudbees.com/job/rtyler/job/heroku-sauce/badge/icon)](https://buildhive.cloudbees.com/job/rtyler/job/heroku-sauce/)
-
 An experimental plugin for the Heroku CLI to hook it up to Sauce Labs.
 
 
