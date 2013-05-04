@@ -1,7 +1,8 @@
 # Heroku + Sauce = ♡
 
-A plugin for the Heroku CLI for quick and easy manual testing with Sauce Labs.
+[![Build Status](https://travis-ci.org/sauce-labs/heroku-sauce.png)](https://travis-ci.org/sauce-labs/heroku-sauce)
 
+A plugin for the Heroku CLI for quick and easy manual testing with Sauce Labs.
 
 ## Using
 
