@@ -37,13 +37,13 @@ describe Sauce::Heroku::Config do
       end
     end
 
-    context "without valid credentials" do
-      it "returns an empty array" do
-        RestAPI.should_receive(:get_user_details).with(anything,anything).and_raise(Sauce::AuthenticationError)
-
-        config.guess_config("password").should be_empty
-      end
-    end
+    #context "without valid credentials" do
+    #  it "returns an empty array" do
+    #    RestAPI.should_receive(:get_user_details).with(anything,anything).and_raise(Sauce::AuthenticationError)
+    #
+    #    config.guess_config("password").should be_empty
+    #  end
+    #end
   end
 
   describe '#configured?' do
@@ -153,7 +153,7 @@ describe Sauce::Heroku::Config do
         puts "Config is currently: #{config.nil?}"
         config.should_receive(:filepath)
       end
-      
+
       context 'with no environment variables' do
         before :each do
           config.stub(:environment_configured?).and_return {false}
@@ -292,7 +292,7 @@ describe Sauce::Heroku::Config do
 
         it { should be_nil }
       end
-      
+
       context "with details in the ENV" do
         before :each do
           ENV["SAUCE_ACCESS_KEY"] = 'DSFARGEG'
