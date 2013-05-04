@@ -6,7 +6,7 @@ require 'sauce/heroku/config'
 require 'sauce/heroku/errors'
 
 require 'highline/import'
-require 'IO/console'
+require 'io/console'
 
 module Heroku
   module Command
