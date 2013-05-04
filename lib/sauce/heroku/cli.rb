@@ -25,7 +25,7 @@ module Heroku
       end
 
       def guess_password
-        password = HighLine.ask("Sauce Labs Password? ") {|q| q.echo = "*"}
+        password = HighLine.ask("Sauce Labs Password: ") {|q| q.echo = "*"}
         guess = @config.guess_config (password)
         if guess.empty?
           display "Sorry, we couldn't find your account."
@@ -49,16 +49,16 @@ module Heroku
         end
 
         display "Successfully created your account"
-  
+
         return [new_account["id"], new_account["access_key"]]
       end
 
       def ask_for_account_details
         credentials = []
-        credentials[0] = HighLine.ask("Desired Username? ")
-        credentials[1] = HighLine.ask("Password? ")
-        credentials[2] = HighLine.ask("Email Address? <%= ::Heroku::Auth.user %> ") { |q| q.default = ::Heroku::Auth.user }
-        credentials[3] = HighLine.ask("Full Name? ")
+        credentials[0] = HighLine.ask("Desired username: ")
+        credentials[1] = HighLine.ask("Password: ")
+        credentials[2] = HighLine.ask("Email address: <%= ::Heroku::Auth.user %> ") { |q| q.default = ::Heroku::Auth.user }
+        credentials[3] = HighLine.ask("Full name: ")
 
         @sauceapi.create_account *credentials
       end
@@ -66,7 +66,7 @@ module Heroku
       # sauce:configure
       #
       # Configure the Sauce CLI plugin with your username and API key
-      # 
+      #
       # Attempts to guess credentials using Heroku email and Sauce password
       # unless passed all arguments
       #

@@ -10,7 +10,7 @@ An experimental plugin for the Heroku CLI to hook it up to Sauce Labs.
 
 To install the Sauce for Heroku plugin, run the following command:
 
-    % heroku plugins:install git://github.com/dylanlacey/heroku-sauce.git
+    % heroku plugins:install git://github.com/sauce-labs/heroku-sauce.git
 
 After the plugin has been successfully installed, the `heroku help sauce`
 command should list a number of available subcommands:
@@ -44,7 +44,7 @@ Sauce:
     % heroku sauce:configure
     Password for Sauce Labs:
 
-    Sauce CLL plugin configured with:
+    Sauce CLI plugin configured with:
  
     Username: example
     API key : example-key
